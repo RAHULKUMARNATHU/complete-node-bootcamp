@@ -6,12 +6,14 @@ const app = express();
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const { dirname } = require('path');
 
 /*1) MIDDLEWARE */
 app.use(morgan('dev'));
 
 /*Here express.json is middleware */
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`))
 
 
 
