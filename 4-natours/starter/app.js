@@ -1,9 +1,8 @@
 const fs = require('fs'); /*Core module */
 const express = require('express');
- const morgan = require('morgan')
+const morgan = require('morgan');
 
 const app = express();
-
 
 /*1) MIDDLEWARE */
 app.use(morgan('dev'));
@@ -36,7 +35,6 @@ app.use((req, res, next) => {
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 ); /*JSON.parse ----> converts into javascript object */
-
 
 /*2) ROUTE HANDLER */
 /*getAll tours */
@@ -99,6 +97,43 @@ const createTour = (req, res) => {
   );
 };
 
+/*Users */
+
+const getAllUsers = (req, res) => {
+  res.status(200).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(200).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(200).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(200).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(200).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
 /*3) ROUTES */
 // app.get('/api/v1/tours', getAllTours);
 
@@ -106,11 +141,20 @@ const createTour = (req, res) => {
 
 // app.post('/api/v1/tour', createTour);
 
+/*Mounting the routes */
 
-app.route('/api/v1/tours/').get(getAllTours).post(createTour);
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
-app.route('/api/v1/tours/:id').get(getTour);
+tourRouter.route('/').get(getAllTours).post(createTour);
 
+tourRouter.route('/:id').get(getTour);
+
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 /*4) START SERVER */
 app.listen(port, () => {
   console.log(`App Running on port ${port}...`);
