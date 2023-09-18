@@ -17,6 +17,18 @@ exports.checkID = (req, res, next, val) => {
   }
   next();
 };
+
+/*Check body */
+
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(500).json({
+      status: 'failed',
+      message: 'price or name missing',
+    });
+  }
+  next();
+};
 /*getAll tours */
 
 exports.getAllTours = (req, res) => {
@@ -80,10 +92,10 @@ exports.createTour = (req, res) => {
 
 /*Update tour */
 exports.updateTour = (req, res) => {
-   res.status(200).json({
+  res.status(200).json({
     status: 'success',
     data: {
-      tour:`Tour updated successfully`,
+      tour: `Tour updated successfully`,
     },
   });
 };
