@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 /*Here express.json is middleware */
 app.use(express.json());
 
-const port = 3000;
+
 
 app.use((req, res, next) => {
   console.log('Hello from the middleware 👋');
@@ -46,7 +46,6 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-/*4) START SERVER */
-app.listen(port, () => {
-  console.log(`App Running on port ${port}...`);
-});
+
+
+module.exports = app ;
