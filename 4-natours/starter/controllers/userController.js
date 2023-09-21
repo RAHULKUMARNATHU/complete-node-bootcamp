@@ -1,3 +1,7 @@
+const user = require('./../models/userModel');
+
+
+
 /*Users */
 
 exports.getAllUsers = (req, res) => {
