@@ -3,15 +3,32 @@ const Tour = require('./../models/tourModel');
 /*getAll tours */
 
 exports.getAllTours = async (req, res) => {
-  const queryObj = { ...req.query };
-  const excludeFields = ['page', 'sort', 'limit', 'fields'];
-  excludeFields.forEach((el) => delete queryObj[el]);
-  // console.log(queryObj, req.query);
-  // console.log(req.requestTime);
   try {
-    const query = Tour.find(queryObj);
+    //BUILD QUERY
+    //1) Filtering
+    const queryObj = { ...req.query };
+    const excludeFields = ['page', 'sort', 'limit', 'fields'];
+    excludeFields.forEach((el) => delete queryObj[el]);
+    // console.log(queryObj, req.query);
+    // console.log(req.requestTime);
+
+    /*ADVANCE FILTERING */
+    let queryStr = JSON.stringify(queryObj);
+
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // console.log(queryStr);
+    /*{difficulty:'easy' , duration:{ $gte: 5}}
+    we have achieved {"difficulty":"easy","duration":{"$gte":"5"}}
+    after JSON.parse we get the exact 
+  ` query URL http://localhost:8000/api/v1/tours?duration[gte]=5&difficulty=easy&page=2&sort=1&limit=10&price[lte]=1500*/
+
+    const query = Tour.find(JSON.parse(queryStr));
 
     const tours = await query;
+
+    /*ANOTHER WAY TO FILTER */
+
+    // const query = await Tour.find().where('duration').equals(5).where().equals();
 
     res.status(200).json({
       status: 'success',
