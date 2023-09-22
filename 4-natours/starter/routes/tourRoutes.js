@@ -8,6 +8,11 @@ const tourController = require('../controllers/tourController');
 
 /*in post method we are chaining the multiple middleware ,
 we can also set privilege of middleware by passing as we want the privilege  */
+
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
+
 router
   .route('/')
   .get(tourController.getAllTours)
