@@ -9,6 +9,7 @@ const tourController = require('../controllers/tourController');
 /*in post method we are chaining the multiple middleware ,
 we can also set privilege of middleware by passing as we want the privilege  */
 router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
 router
   .route('/top-5-cheap')
