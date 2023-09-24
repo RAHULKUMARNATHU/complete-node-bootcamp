@@ -105,7 +105,7 @@ tourSchema.post('save', function (doc, next) {
 // tourSchema.pre('find', function (next) {
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
-  this.start  = Date.now() ;
+  this.start = Date.now();
   next();
 });
 
@@ -114,8 +114,14 @@ tourSchema.post(/^find/, function (docs, next) {
   console.log(docs);
   next();
 });
-module.exports = mongoose.model('Tour', tourSchema);
 
 /*Aggregate middleware*/
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  // console.log(this.pipeline());
+  next();
+});
+
+module.exports = mongoose.model('Tour', tourSchema);
 
 /*Model middleware */
