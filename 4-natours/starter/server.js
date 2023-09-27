@@ -18,6 +18,7 @@ mongoose
   .then(() => {
     console.log('DB connection successfully!');
   });
+
 // console.log(app.get('env'));
 
 // const testTour = new Tour({
@@ -38,6 +39,14 @@ mongoose
 const port = process.env.PORT || 3000;
 
 /*4) START SERVER */
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App Running on port ${port}...`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, ':', err.message);
+  /*close gracefully not abrupt the running server or pending request */
+  server.close(() => {
+    process.exit(1);
+  });
 });
