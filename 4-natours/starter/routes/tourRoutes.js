@@ -2,7 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
+const authController = require('./../controllers/authController')
 const tourController = require('../controllers/tourController');
+
 /*this middleware apply only on where id comes through params */
 // router.param('id', tourController.checkID);
 
@@ -17,7 +19,7 @@ router
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect ,tourController.getAllTours)
   .post(tourController.createTour);
 
 router
