@@ -46,6 +46,8 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+  loginAttempts: Number,
+  lockUntil: Number,
 });
 
 userSchema.pre('save', async function (next) {
@@ -66,7 +68,7 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre(/^find/, function (next) {
-  if (this.find({active : { $ne: false }}));
+  if (this.find({ active: { $ne: false } }));
   next();
 });
 
