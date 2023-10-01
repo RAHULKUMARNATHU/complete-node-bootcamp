@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const reteLimit = require('express-rate-limit');
+
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const app = express();
@@ -7,41 +9,28 @@ const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 
-/*1) MIDDLEWARE */
+/*1) GLOBAL MIDDLEWARE */
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+/*LIMITER */
+const limiter = reteLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000 /*1 hr 100 req */,
+  message: 'Too many requests from this IP , please try again in an hour',
+});
+
+app.use('/api', limiter);
 
 /*Here express.json is middleware */
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
-// app.use((req, res, next) => {
-//   console.log('Hello from the middleware 👋');
-//   next();
-// });
-
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
-
-// app.get('/', (req, res) => {
-//   res
-//     .status(200)
-//     .json({ message: 'Hello  from the server side! ', app: 'Natours' });
-// });
-
-// app.post('/', (req, res) => {
-//   res.status(201).json({ message: 'You can post this endpoint ' });
-// });
-
-/*3) ROUTES */
-// app.get('/api/v1/tours', getAllTours);
-
-// app.get('/api/v1/tours/:id', getTour);
-
-// app.post('/api/v1/tour', createTour);
 
 /*Mounting the routes */
 
