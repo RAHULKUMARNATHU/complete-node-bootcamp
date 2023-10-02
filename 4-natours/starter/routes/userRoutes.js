@@ -15,7 +15,12 @@ router.patch(
   authController.updatePassword,
 );
 
-router.patch('/updateMe', authController.protect, userController.updateMe);
+router.patch(
+  '/updateMe',
+  authController.protect,
+  userController.setUserBody,
+  userController.updateMe,
+);
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 router
@@ -25,7 +30,7 @@ router
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.updateUser)
+  .patch(userController.setUserBody, userController.updateUser)
   .delete(
     authController.protect,
     authController.restrictTo('admin'),

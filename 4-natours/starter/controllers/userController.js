@@ -2,7 +2,7 @@ const { deleteOne } = require('../models/tourModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const User = require('./../models/userModel');
-const handlerFactory = require('./handlerFactory')
+const handlerFactory = require('./handlerFactory');
 /*Users */
 
 const filterObj = (obj, ...allowedFields) => {
@@ -15,7 +15,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.updateMe = catchAsync(async (req, res, next) => {
+exports.setUserBody = (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -27,11 +27,22 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   /*Filter out unwanted fields name that are not allowed to be updated */
 
   const filteredBody = filterObj(req.body, 'name', 'email');
+  if (filteredBody) {
+    req.body = filteredBody;
+  }
+  next();
+};
+
+exports.updateMe = catchAsync(async (req, res, next) => {
   /*Update user Document */
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
   res.status(200).json({
     status: 'success',
@@ -76,8 +87,6 @@ exports.createUser = (req, res) => {
   });
 };
 
-
 /*DO NOT Update passwords with this! */
-exports.updateUser = handlerFactory.updateOne(User)
-
+exports.updateUser = handlerFactory.updateOne(User);
 exports.deleteUser = handlerFactory.deleteOne(User);

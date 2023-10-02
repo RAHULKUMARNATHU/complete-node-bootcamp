@@ -50,24 +50,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-/*create tour */
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
-});
-
-/*Update tour */
-exports.updateTour = handlerFactory.updateOne(Tour);
-
-/*Delete Tour */
-exports.deleteTour = handlerFactory.deleteOne(Tour);
-
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
     {
@@ -152,3 +134,10 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+/*create tour */
+exports.createTour = handlerFactory.createOne(Tour);
+/*Update tour */
+exports.updateTour = handlerFactory.updateOne(Tour);
+/*Delete Tour */
+exports.deleteTour = handlerFactory.deleteOne(Tour);
