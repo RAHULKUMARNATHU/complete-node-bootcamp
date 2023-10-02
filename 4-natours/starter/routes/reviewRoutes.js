@@ -20,6 +20,11 @@ router
     authController.protect,
     authController.restrictTo('admin'),
     reviewController.deleteReview,
+  )
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    reviewController.updateReview,
   );
 
 module.exports = router;

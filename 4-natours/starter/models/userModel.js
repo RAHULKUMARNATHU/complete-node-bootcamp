@@ -46,8 +46,14 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
-  loginAttempts: Number,
-  lockUntil: Number,
+  loginAttempts: {
+    type: Number,
+    select: false,
+  },
+  lockUntil: { 
+    type: Number, 
+    select: false 
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -96,8 +102,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  console.log({ resetToken }, this.passwordResetToken);
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   return resetToken;
 };
 
