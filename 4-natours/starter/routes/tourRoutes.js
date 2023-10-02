@@ -1,10 +1,13 @@
 const express = require('express');
+const authController = require('./../controllers/authController');
+const tourController = require('../controllers/tourController');
+const reviewRouter = require('./reviewRoutes');
+// const reviewController = require('../controllers/reviewController');
 
 const router = express.Router();
 
-const authController = require('./../controllers/authController');
-const tourController = require('../controllers/tourController');
-const reviewController = require('../controllers/reviewController');
+router.use('/:tourId/reviews', reviewRouter);
+
 /*this middleware apply only on where id comes through params */
 // router.param('id', tourController.checkID);
 
@@ -32,12 +35,12 @@ router
     tourController.deleteTour,
   );
 
-router
-  .route('/:tourId/reviews')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    reviewController.createReview,
-  );
+// router
+//   .route('/:tourId/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview,
+//   );
 
 module.exports = router;
