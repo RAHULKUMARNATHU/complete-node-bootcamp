@@ -10,13 +10,14 @@ router
   .get(reviewController.getAllReviews)
   .post(
     authController.protect,
-    authController.restrictTo('user' , 'admin'),
+    authController.restrictTo('user', 'admin'),
     reviewController.setTourUserIds,
     reviewController.createReview,
   );
 
 router
   .route('/:id')
+  .get(reviewController.getReviewById)
   .delete(
     authController.protect,
     authController.restrictTo('admin'),

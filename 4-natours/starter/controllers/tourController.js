@@ -1,8 +1,8 @@
-const AppError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
-const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const handlerFactory = require('./handlerFactory');
+// const APIFeatures = require('./../utils/apiFeatures');
+// const AppError = require('../utils/appError');
 
 (exports.aliasTopTours = async (req, res, next) => {
   (req.query.sort = '-ratingsAverage, price'),
@@ -10,80 +10,41 @@ const handlerFactory = require('./handlerFactory');
     (req.query.fields = 'name , price ,ratingsAverage,summary,difficulty');
   next();
 }),
-  /*get-all-tours  */
-  (exports.getAllTours = catchAsync(async (req, res, next) => {
-    const features = new APIFeatures(Tour.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .pagination();
-
-    // console.log(await features.query);
-    // const tours = await query; /*previously */
-    const tours = await features.query;
+  /*Tour stats */
+  (exports.getTourStats = catchAsync(async (req, res, next) => {
+    const stats = await Tour.aggregate([
+      {
+        $match: { ratingsAverage: { $gte: 4.5 } },
+      },
+      {
+        $group: {
+          // _id :'$ratingsAverage',
+          // _id: '$price',
+          _id: { $toUpper: '$difficulty' },
+          numTours: { $sum: 1 },
+          numRating: { $sum: '$ratingsQuantity' },
+          avgRating: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' },
+        },
+      },
+      {
+        $sort: { avgPrice: -1 },
+      },
+      /*we can also repeat the stages */
+      // {
+      //   $match: { _id: { $ne: 'EASY' } },
+      // },
+    ]);
 
     res.status(200).json({
       status: 'success',
-      requestedAt: req.requestTime,
-      results: tours.length,
       data: {
-        tours,
+        stats,
       },
     });
   }));
-
-/*get tour by id */
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  // const tour = await Tour.find({ name: name });
-
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-
-  if (!tour) {
-    return next(new AppError('No tour found with that Id', 404));
-  }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.getTourStats = catchAsync(async (req, res, next) => {
-  const stats = await Tour.aggregate([
-    {
-      $match: { ratingsAverage: { $gte: 4.5 } },
-    },
-    {
-      $group: {
-        // _id :'$ratingsAverage',
-        // _id: '$price',
-        _id: { $toUpper: '$difficulty' },
-        numTours: { $sum: 1 },
-        numRating: { $sum: '$ratingsQuantity' },
-        avgRating: { $avg: '$ratingsAverage' },
-        avgPrice: { $avg: '$price' },
-        minPrice: { $min: '$price' },
-        maxPrice: { $max: '$price' },
-      },
-    },
-    {
-      $sort: { avgPrice: -1 },
-    },
-    /*we can also repeat the stages */
-    // {
-    //   $match: { _id: { $ne: 'EASY' } },
-    // },
-  ]);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      stats,
-    },
-  });
-});
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   const year = req.params.year * 1;
@@ -135,6 +96,10 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   });
 });
 
+/*get-all-tours  */
+exports.getAllTours = handlerFactory.getAll(Tour);
+/*get tour by id */
+exports.getTour = handlerFactory.getOne(Tour, { path: 'reviews' });
 /*create tour */
 exports.createTour = handlerFactory.createOne(Tour);
 /*Update tour */
