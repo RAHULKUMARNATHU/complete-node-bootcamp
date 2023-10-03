@@ -112,16 +112,19 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
 /*virtual populate */
-tourSchema.virtual('reviews',{
-  ref:'Review',
-  foreignField:'tour',
-  localField:'_id'
-})
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
 
 /*Document middleware -- Runs only before the .save() and .create()*/
 
