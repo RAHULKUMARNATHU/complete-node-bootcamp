@@ -169,11 +169,12 @@ tourSchema.post(/^find/, function (docs, next) {
 });
 
 /*Aggregate middleware*/
-tourSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  // console.log(this.pipeline());
-  next();
-});
+/*commented due to geoNear aggregate  is only valid as the first stage in a pipeline */
+// tourSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//   // console.log(this.pipeline());
+//   next();
+// });
 
 module.exports = mongoose.model('Tour', tourSchema);
 
