@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const reteLimit = require('express-rate-limit');
@@ -8,11 +9,20 @@ const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const app = express();
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+
+const app = express();
+
+/*setting template engine pug*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+/*Serving static files */
+app.use(express.static(path.join(__dirname, 'public')));
+
 /*Set Security HTTP headers */
 app.use(helmet());
 
@@ -55,9 +65,6 @@ app.use(
   }),
 );
 
-/*Serving static files */
-app.use(express.static(`${__dirname}/public`));
-
 /*Test  middleware*/
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -65,6 +72,10 @@ app.use((req, res, next) => {
 });
 
 /*Mounting the routes */
+
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
