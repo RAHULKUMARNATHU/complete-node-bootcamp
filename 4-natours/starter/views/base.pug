@@ -7,15 +7,15 @@ html
         rel='stylesheet')
         link(rel='stylesheet' href='css/style.css')
         link(rel='shortcut icon' type='image/png' href='img/favicon.png')
-        title Natours | #{tour}
+        title Natours | #{title}
 
 
     body 
         //- HEADER
         include _header
         //- CONTENT
-        section.overview 
-            h1=tour
+        block content 
+            h1 This is a placeholder heading 
         
         //- FOOTER
         include _footer
