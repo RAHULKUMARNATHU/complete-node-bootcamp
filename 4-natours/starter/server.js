@@ -9,7 +9,6 @@ process.on('uncaughtException', (err) => {
 });
 
 const app = require('./app');
-console.log(">>>>>>>>>>>>>>>>>DATABASE",process.env.DATABASE);
 
 let DB;
 if (process.env.NODE_ENV === 'production') {
