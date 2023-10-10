@@ -5,10 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "set NODE_ENV=development&&nodemon server.js",
-    "start:prod": "set NODE_ENV=production&&node server.js",
+    "start:prod": "set NODE_ENV=production&&nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "ndb server.js",
-    "watch:js": "parcel watch --no-hmr ./public/js/index.js --out-dir ./public/js --out-file bundle.js",    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+    "watch:js": "parcel watch --no-hmr ./public/js/index.js --out-dir ./public/js --out-file bundle.js",   
+    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
   },
   "author": "rahul",
   "license": "ISC",
