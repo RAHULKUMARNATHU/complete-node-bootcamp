@@ -9,7 +9,7 @@ router.use(authController.isLoggedIn);
 /*ALL Tours */
 router.get('/', viewsController.getOverview);
 /*get tour details */
-router.get('/tour/:slug', viewsController.getTour);
+router.get('/tour/:slug',authController.protect , viewsController.getTour);
 /*Login Route */
 router.get('/login', viewsController.getLoginForm);
 
