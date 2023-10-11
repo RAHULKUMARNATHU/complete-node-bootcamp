@@ -4,13 +4,11 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
-/*Applies this middleware to each route */
-router.use(authController.isLoggedIn);
 /*ALL Tours */
-router.get('/', viewsController.getOverview);
+router.get('/', authController.isLoggedIn, viewsController.getOverview);
 /*get tour details */
-router.get('/tour/:slug',authController.protect , viewsController.getTour);
+router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
 /*Login Route */
-router.get('/login', viewsController.getLoginForm);
-
+router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
+router.get('/me', authController.protect, viewsController.getAccount);
 module.exports = router;
