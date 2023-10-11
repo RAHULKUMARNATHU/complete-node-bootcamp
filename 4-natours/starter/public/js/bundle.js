@@ -12022,7 +12022,7 @@ var login = exports.login = /*#__PURE__*/function () {
           _context.next = 3;
           return (0, _axios.default)({
             method: 'POST',
-            url: 'http://localhost:8000/api/v1/users/login',
+            url: 'https://natours-api-o2hy.onrender.com/api/v1/users/login',
             data: {
               email: email,
               password: password
@@ -12220,7 +12220,7 @@ var _mapbox = require("./mapbox");
 var _login = require("./login");
 /*DOM ELEMENTS */
 var mapBox = document.getElementById('map');
-var loginForm = document.querySelector('.form');
+var loginForm = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout');
 if (mapBox) {
   var locations = JSON.parse(document.getElementById('map').dataset.locations);
