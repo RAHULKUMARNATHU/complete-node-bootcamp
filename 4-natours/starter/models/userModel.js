@@ -15,7 +15,10 @@ const userSchema = new mongoose.Schema({
     lowerCase: true,
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: 'default.jpg',
+  },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
@@ -50,9 +53,9 @@ const userSchema = new mongoose.Schema({
     type: Number,
     select: false,
   },
-  lockUntil: { 
-    type: Number, 
-    select: false 
+  lockUntil: {
+    type: Number,
+    select: false,
   },
 });
 
@@ -102,7 +105,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   return resetToken;
 };
 
