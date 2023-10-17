@@ -32,12 +32,6 @@ module.exports = class Email {
   //send the actual email
  async send(template, subject) {
     //1)Render HTML based on a pug template
-    // const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`),
-    // {
-    //   firstName : this.firstName,
-    //   url : this.url,
-    //   subject
-    // }
     
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
@@ -51,12 +45,12 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject,
-      text: htmlToText.fromString(html),
+      text: htmlToText.convert(html),
       html,
     };
 
     //3)create a transport and send email
-    await this.newTransport.sendMail(mailOptions);
+    await this.newTransport().sendMail(mailOptions);
   }
 
   async sendWelcome() {
