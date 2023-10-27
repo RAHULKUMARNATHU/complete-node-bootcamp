@@ -93,10 +93,8 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  console.log('inside logout');
 
   const resp = res.clearCookie('jwt');
-  console.log(resp);
   // res.cookie('jwt', 'loggedOutToken', {
   //   expiresIn: new Date(Date.now() + 10 * 1000),
   //   httpOnly: true,
