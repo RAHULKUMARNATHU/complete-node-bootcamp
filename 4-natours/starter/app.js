@@ -21,8 +21,10 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
+app.enable('trust proxy')
 
 app.use(cors());
+app.options('*',cors()) //to-do complex operation -like delete or patch
 
 /*setting template engine pug*/
 app.set('view engine', 'pug');
