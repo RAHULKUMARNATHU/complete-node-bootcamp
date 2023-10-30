@@ -24,7 +24,7 @@ const app = express();
 app.enable('trust proxy');
 
 app.use(cors());
-// app.options('*', cors()); //to-do complex operation -like delete or patch
+app.options('*', cors()); //to-do complex operation -like delete or patch
 
 /*setting template engine pug*/
 app.set('view engine', 'pug');
@@ -120,7 +120,7 @@ app.use('/api', limiter);
 
 // app.use(express.raw());
 app.post(
-  '/webhook-check',
+  '/webhook-checkout',
   express.raw({ type: 'application/json' }),
   bookingController.webhookCheckout,
 );
