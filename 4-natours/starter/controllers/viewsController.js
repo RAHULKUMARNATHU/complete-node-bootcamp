@@ -49,6 +49,19 @@ exports.getLoginForm = catchAsync(async (req, res) => {
     });
 });
 
+/*sign-up Route for views */
+exports.getSignupForm = catchAsync(async (req, res) => {
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com",
+    )
+    .render('signup', {
+      title: 'sign-up your account',
+    });
+});
+
 exports.getAccount = catchAsync(async (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',
