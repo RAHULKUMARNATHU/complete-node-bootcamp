@@ -24,10 +24,12 @@ if (mapBox) {
 }
 
 if (loginForm) {
+  console.log('Login form');
   document.querySelector('.form').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    console.log('Login form', email);
     login(email, password);
   });
 }

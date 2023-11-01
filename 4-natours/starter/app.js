@@ -21,8 +21,9 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const bookingController = require('./controllers/bookingController');
 const app = express();
-app.enable('trust proxy');
+// app.enable('trust proxy');
 
+app.set('trust proxy', 'loopback');
 app.use(cors());
 app.options('*', cors()); //to-do complex operation -like delete or patch
 
