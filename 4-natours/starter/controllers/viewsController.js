@@ -104,3 +104,10 @@ exports.alerts = (req, res, next) => {
       "Your booking was successful ! Please check your email for a confirmation. If your  doesn't show up here immediately , please come back later. ";
   next();
 };
+
+
+exports.forgotPassword =(req ,res ,next) => {
+res.status(200).render('forgotpassword', {
+  title: 'Forgot-Password',
+});
+};

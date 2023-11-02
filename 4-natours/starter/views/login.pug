@@ -2,9 +2,9 @@ extends base
 
 block content
 
-    section
+    section.section-login
         - for (var i = 0; i < 208; i++)
-            span
+            span.span-login
         .signin
             .content--signin
                 h2 Log into your account
@@ -16,7 +16,7 @@ block content
                         input#password.form__input__login(type="password", required, minlength='8')
                         i Password
                     .links
-                        a(href="#") Forgot Password
+                        a(href="/forgotPassword") Forgot Password
                         a(href="/signup") Signup
                     .inputBox
                         input(type="submit", value="Login")

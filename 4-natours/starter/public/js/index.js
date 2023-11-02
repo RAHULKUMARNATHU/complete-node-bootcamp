@@ -4,6 +4,7 @@ import { login, logout } from './login';
 import { signup } from './signup';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
+import {forgotPassword} from './forgotpassword'
 import { showAlert } from './alert';
 
 /*DOM ELEMENTS */
@@ -14,6 +15,8 @@ const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-settings');
 const bookBtn = document.getElementById('book-tour');
 const signupForm = document.querySelector('.form--signup');
+const forgotPasswordForm = document.querySelector('.form--forgetPass');
+
 //DELEGATION
 if (mapBox) {
   const locations = JSON.parse(
@@ -29,7 +32,6 @@ if (loginForm) {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    console.log('Login form', email);
     login(email, password);
   });
 }
@@ -45,7 +47,16 @@ if (signupForm) {
     signup(name, email, password, passwordConfirm);
   });
 }
-if (logOutBtn) logOutBtn.addEventListener('click', logout);
+/*forget password */
+if (forgotPasswordForm){
+  document.querySelector('.form').addEventListener('submit',(e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    console.log(email);
+    forgotPassword(email);
+  })
+}
+  if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 if (userDataForm)
   userDataForm.addEventListener('submit', async (e) => {
