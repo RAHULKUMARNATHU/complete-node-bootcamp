@@ -1222,7 +1222,7 @@ body {
   margin: 0 auto;
 }
 
-.login-form, .signup-form, .forgetpassword-form {
+.login-form, .signup-form, .forgetpassword-form, .resetpassword-form {
   margin: 0 auto;
   max-width: 55rem;
   background-color: #fff;

@@ -4,9 +4,10 @@ import { login, logout } from './login';
 import { signup } from './signup';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
-import {forgotPassword} from './forgotpassword'
-import { showAlert } from './alert';
+import { forgotPassword, resetPassword } from './forgotpassword';
 
+import { showAlert } from './alert';
+const currentUrl = window.location.href;
 /*DOM ELEMENTS */
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
@@ -16,6 +17,7 @@ const userPasswordForm = document.querySelector('.form-user-settings');
 const bookBtn = document.getElementById('book-tour');
 const signupForm = document.querySelector('.form--signup');
 const forgotPasswordForm = document.querySelector('.form--forgetPass');
+const resetPasswordForm = document.querySelector('.form--resetPass');
 
 //DELEGATION
 if (mapBox) {
@@ -48,15 +50,27 @@ if (signupForm) {
   });
 }
 /*forget password */
-if (forgotPasswordForm){
-  document.querySelector('.form').addEventListener('submit',(e) => {
+if (forgotPasswordForm) {
+  document.querySelector('.form').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
-    console.log(email);
     forgotPassword(email);
-  })
+  });
 }
-  if (logOutBtn) logOutBtn.addEventListener('click', logout);
+
+/*Reset Password */
+const urlParts = currentUrl.split('/');
+const token = urlParts[urlParts.length - 1];
+if (resetPasswordForm && token) {
+  document.querySelector('.form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    resetPassword(token, password, passwordConfirm);
+  });
+}
+if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 if (userDataForm)
   userDataForm.addEventListener('submit', async (e) => {

@@ -111,3 +111,9 @@ res.status(200).render('forgotpassword', {
   title: 'Forgot-Password',
 });
 };
+
+exports.resetPassword = (req, res, next) => {
+  res.status(200).render('resetpassword', {
+    title: 'reset-Password',
+  });
+};
